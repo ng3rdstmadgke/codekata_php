@@ -10,11 +10,11 @@
 *
 */
 class WordChain {
-    private $usedWords;
-    private $originDict;
-    private $wordsDict;
-    private $word;
-    private $turn;
+    private $usedWords;     // (array)使用済み単語リスト
+    private $originDict;    // (array)使用可能単語リスト(処理の中で要素が削除・変更されることはない)
+    private $wordsDict;     // (array)使用可能単語リスト(単語が使用されるとその要素が削除される)
+    private $word;          // (str)プレイヤーが当該ターンに使用し他単語
+    private $turn;          // (int)0=USER先攻、1=CPU先攻
 
     public function __construct() {
         $fileContents = file_get_contents("word.txt");
@@ -94,7 +94,7 @@ class WordChain {
     }
 
     /*
-    * judge()の戻り値を元にメッセージを生成する。
+    * judge()の戻り値を元に終了メッセージを生成する。
     */
     public function createMessage(array $judge) {
         $wordsCnt = count($this->usedWords) + 1;
@@ -134,10 +134,10 @@ class WordChain {
         $cnt = 1;
         if ($this->turn === 1) {
             $cnt++;
-            print "CPUが先攻です";
+            print "CPUが先攻です(push Enter)";
             fgets(STDIN);
         }else {
-            print "USERが先攻です";
+            print "USERが先攻です(push Enter)";
             fgets(STDIN);
         }
         while (true) {
